@@ -1,6 +1,6 @@
 #include "reg52.h"
 #include <intrins.H>
-#include "ds1302.c"//Ğ¾Æ¬Çı¶¯³ÌĞò
+#include "ds1302.c"//èŠ¯ç‰‡é©±åŠ¨ç¨‹åº
 #define u8 unsigned char
 
 sfr P0M1 = 0x93;
@@ -26,7 +26,7 @@ sbit  COM3 = P0^1;
 sbit  COM4 = P0^0;
 sbit  COM5 = P5^4;
 
-//°´Å¥¶¨Òå
+//æŒ‰é’®å®šä¹‰
 sbit  add = P3^2;
 sbit  minus = P3^5;	
 sbit  timesetting = P3^4;
@@ -59,7 +59,7 @@ int counter1S,keymode,i,flashtimeout,count;
 int thoumode,hundmode,tenmode,onemode,lightnumber;
 bit flash,dot;
 								
-//¶ş½øÖÆ×ªbcdÂë
+//äºŒè¿›åˆ¶è½¬bcdç 
 u8 bin2bcd(u8 i)
 {
 	i = ((i / 10) << 4) + i % 10;
@@ -79,108 +79,108 @@ u8 order(u8 a)
 }
 
 void delayms(int ms)
-//Õâ¸öÈí¼ş´óÔ¼¿ÉÒÔµÈ´ımsºÁÃë
+//è¿™ä¸ªè½¯ä»¶å¤§çº¦å¯ä»¥ç­‰å¾…msæ¯«ç§’
 {
     int i,k;
     for(k=0; k<ms;k++)  {   for(i=0;i<500;i++);  }
 }
-//µÚÒ»¸öµÆÁÁ¶ÈÑ¡Ôñ
+//ç¬¬ä¸€ä¸ªç¯äº®åº¦é€‰æ‹©
 void thourefresh(void)
 {
-	if(thoumode==1)//×îÁÁ
+	if(thoumode==1)//æœ€äº®
 		{
 			P2 = ledtab[thou];
 			COM1=0;delayms(12); COM1=1;
 		}
-		else if(thoumode==2)//µÚ¶şÁÁ
+		else if(thoumode==2)//ç¬¬äºŒäº®
 		{
 			P2 = ledtab[thou];COM1=0;delayms(6); 
 			P2=0; delayms(6);COM1=1;
 		}
-		else if(thoumode==3)//µÚ¶ş°µ
+		else if(thoumode==3)//ç¬¬äºŒæš—
 		{
 			P2 = ledtab[thou];COM1=0;delayms(3); 
 			P2=0; delayms(9);COM1=1;
 		}
-		else if(thoumode==4)//×î°µ
+		else if(thoumode==4)//æœ€æš—
 		{
 			P2 = ledtab[thou];COM1=0;delayms(1); 
 			P2=0; delayms(11);COM1=1;
 		}
 }
-//µÚ¶ş¸öµÆÁÁ¶ÈÑ¡Ôñ
+//ç¬¬äºŒä¸ªç¯äº®åº¦é€‰æ‹©
 void hundrefresh(void)
 {
-	if(hundmode==1)//×îÁÁ
+	if(hundmode==1)//æœ€äº®
 		{
 			P2 = ledtab[hund];
 			COM2=0;delayms(12); COM2=1;
 		}
-		else if(hundmode==2)//µÚ¶şÁÁ
+		else if(hundmode==2)//ç¬¬äºŒäº®
 		{
 			P2 = ledtab[hund];COM2=0;delayms(6); 
 			P2=0; delayms(6);COM2=1;
 		}
-		else if(hundmode==3)//µÚ¶ş°µ
+		else if(hundmode==3)//ç¬¬äºŒæš—
 		{
 			P2 = ledtab[hund];COM2=0;delayms(3); 
 			P2=0; delayms(9);COM2=1;
 		}
-		else if(hundmode==4)//×î°µ
+		else if(hundmode==4)//æœ€æš—
 		{
 			P2 = ledtab[hund];COM2=0;delayms(1); 
 			P2=0; delayms(11);COM2=1;
 		}
 }
-//µÚÈı¸öµÆÁÁ¶ÈÑ¡Ôñ
+//ç¬¬ä¸‰ä¸ªç¯äº®åº¦é€‰æ‹©
 void tenrefresh(void)
 {
-	if(tenmode==1)//×îÁÁ
+	if(tenmode==1)//æœ€äº®
 		{
 			P2 = ledtab[ten];
 			COM3=0;delayms(12); COM3=1;
 		}
-		else if(tenmode==2)//µÚ¶şÁÁ
+		else if(tenmode==2)//ç¬¬äºŒäº®
 		{
 			P2 = ledtab[ten];COM3=0;delayms(6); 
 			P2=0; delayms(6);COM3=1;
 		}
-		else if(tenmode==3)//µÚ¶ş°µ
+		else if(tenmode==3)//ç¬¬äºŒæš—
 		{
 			P2 = ledtab[ten];COM3=0;delayms(3); 
 			P2=0; delayms(9);COM3=1;
 		}
-		else if(tenmode==4)//×î°µ
+		else if(tenmode==4)//æœ€æš—
 		{
 			P2 = ledtab[ten];COM3=0;delayms(1); 
 			P2=0; delayms(11);COM3=1;
 		}
 }
-//µÚËÄ¸öµÆÁÁ¶ÈÑ¡Ôñ
+//ç¬¬å››ä¸ªç¯äº®åº¦é€‰æ‹©
 void onerefresh(void)
 {
-	if(onemode==1)//×îÁÁ
+	if(onemode==1)//æœ€äº®
 		{
 			P2 = ledtab[one];
 			COM4=0;delayms(12); COM4=1;
 		}
-		else if(onemode==2)//µÚ¶şÁÁ
+		else if(onemode==2)//ç¬¬äºŒäº®
 		{
 			P2 = ledtab[one];COM4=0;delayms(6); 
 			P2=0; delayms(6);COM4=1;
 		}
-		else if(onemode==3)//µÚ¶ş°µ
+		else if(onemode==3)//ç¬¬äºŒæš—
 		{
 			P2 = ledtab[one];COM4=0;delayms(3); 
 			P2=0; delayms(9);COM4=1;
 		}
-		else if(onemode==4)//×î°µ
+		else if(onemode==4)//æœ€æš—
 		{
 			P2 = ledtab[one];COM4=0;delayms(1); 
 			P2=0; delayms(11);COM4=1;
 		}
 }
-//½çÃæË¢ĞÂ
+//ç•Œé¢åˆ·æ–°
 void refresh(void)
 {
 	thourefresh();
@@ -192,7 +192,7 @@ void refresh(void)
 }
 
 
-//ÏÔÊ¾
+//æ˜¾ç¤º
 void DispTime(void)	//BCD code from 1302
 {
 	thou = hour/10;
@@ -201,7 +201,7 @@ void DispTime(void)	//BCD code from 1302
 	one  = minute%10;
 	LED8 = order(bin2bcd(sec));
 }
-//Ê±·Ö¼Ó¼õÏŞÖÆÅĞ¶Ï
+//æ—¶åˆ†åŠ å‡é™åˆ¶åˆ¤æ–­
 void hourplus()
 {
 	if(++hour>23)hour=0;
@@ -231,7 +231,7 @@ void minuteminus()
 	WRsec(0);
 }
 
-//¼ÓÅĞ¶Ï
+//åŠ åˆ¤æ–­
 void pluscheck()
 {
 	if(add ==0)   	
@@ -248,7 +248,7 @@ void pluscheck()
 			flash = 0;
 		}
 }
-//¼õÅĞ¶Ï
+//å‡åˆ¤æ–­
 void minuscheck(void)
 {
 	if(minus ==0)  	
@@ -275,17 +275,17 @@ void wait(int n)
 }
 void keyscan()
 {	
-	if(keymode != 0)//³¤Ê±¼ä²»µ÷½ÚÊ±¼ä£¬ÍË³öµ÷½ÚÊ±¼äÄ£Ê½
+	if(keymode != 0)//é•¿æ—¶é—´ä¸è°ƒèŠ‚æ—¶é—´ï¼Œé€€å‡ºè°ƒèŠ‚æ—¶é—´æ¨¡å¼
 	{
 		if(++flashtimeout>1000) {flashtimeout = 0; keymode =0;}
 	}
 	
-	if(lightnumber != 0)//³¤Ê±¼ä²»µ÷½ÚÁÁ¶È£¬ÍË³öµ÷½ÚÁÁ¶ÈÄ£Ê½
+	if(lightnumber != 0)//é•¿æ—¶é—´ä¸è°ƒèŠ‚äº®åº¦ï¼Œé€€å‡ºè°ƒèŠ‚äº®åº¦æ¨¡å¼
 	{
 		if(++flashtimeout>1000) {flashtimeout = 0; lightnumber =0;}
 	}
 	
-		//ÅĞ¶ÏÉèÖÃÄ£Ê½
+		//åˆ¤æ–­è®¾ç½®æ¨¡å¼
 	if((minus ==0) || (add ==0)||(timesetting ==0)||(lightsetting ==0))   
 	{
 		count =0;
@@ -295,7 +295,7 @@ void keyscan()
 		{
 			keymode=0;
 			if(++lightnumber>4)lightnumber=0;
-			do{ //µÈ´ı¼üÊÍ·Å
+			do{ //ç­‰å¾…é”®é‡Šæ”¾
 				delayms(3);
 			}while(lightsetting ==0);
 		}
@@ -306,12 +306,12 @@ void keyscan()
 			flashtimeout =0; 
 		}
 		
-		//ÅĞ¶Ï¼Ó¼õ
+		//åˆ¤æ–­åŠ å‡
 		minuscheck();
 		pluscheck();
 		
-		//³¤°´¼ÓËÙÔö¼õ
-		do{				//µÈ´ı¼üÊÍ·Å
+		//é•¿æŒ‰åŠ é€Ÿå¢å‡
+		do{				//ç­‰å¾…é”®é‡Šæ”¾
 			DispTime();
 			refresh();
 
@@ -324,7 +324,7 @@ void keyscan()
 			{
 				pluscheck();
 				minuscheck();
-				count += 1;//¿ØÖÆ¼ÓµÄ¸öÊı£¬ÕâÀï´ó¸Å¼Ó5¸öÊı»á±äµÃ³¬¿ì
+				count += 1;//æ§åˆ¶åŠ çš„ä¸ªæ•°ï¼Œè¿™é‡Œå¤§æ¦‚åŠ 5ä¸ªæ•°ä¼šå˜å¾—è¶…å¿«
 				wait(60);
 			}
 			else
@@ -342,15 +342,15 @@ void keyscan()
 Port Output Configuration timesettings FOR STC
 PxM1.y PxM0.y Port     Pin Mode for STC
  0      0      Quasi-bidirectional
- 0      1      Push-Pull   ¸ßµÍµçÆ½Ç¿Á¦Êä³ö£¬Ò²½ĞÍÆÍìÊä³ö
+ 0      1      Push-Pull   é«˜ä½ç”µå¹³å¼ºåŠ›è¾“å‡ºï¼Œä¹Ÿå«æ¨æŒ½è¾“å‡º
  1      0      Input Only (High Impedance)
  1      1      Open Drain
-´ËÈí¼şÓÃĞ¾Æ¬STC15W408
+æ­¤è½¯ä»¶ç”¨èŠ¯ç‰‡STC15W408
 --------------------------------------------*/
-//³õÊ¼»¯
+//åˆå§‹åŒ–
 void PORTINIT(void)
 {
-	P2M1 = 0x00;  //ÕâÁ½¾ä°ÑP1¿ÚµÄËùÓĞ8¸öIO½ÅÉèÖÃ³ÉÍÆÍìÊä³ö
+	P2M1 = 0x00;  //è¿™ä¸¤å¥æŠŠP1å£çš„æ‰€æœ‰8ä¸ªIOè„šè®¾ç½®æˆæ¨æŒ½è¾“å‡º
 	P2M0 = 0xff;
    	P0M1 = 0x00;
    	P0M0 = 0x00;
@@ -362,12 +362,12 @@ void PORTINIT(void)
 	P1M0 = 0x00;
 }
 
-//Ö÷º¯Êı
+//ä¸»å‡½æ•°
 void main(void)
 {
 	PORTINIT();
 	COM5 = 0;
-	P2 = 0;		//½«P2ËùÓĞLED¶¼¹Ø±Õ
+	P2 = 0;		//å°†P2æ‰€æœ‰LEDéƒ½å…³é—­
 	unwrprt13();
 	WRhour(20);WRmin(58);WRsec(0);
 	keymode=0;
