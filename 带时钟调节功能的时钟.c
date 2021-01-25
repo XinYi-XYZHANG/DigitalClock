@@ -1,6 +1,6 @@
 #include "reg52.h"
 #include <intrins.H>
-#include "ds1302.c"//Ğ¾Æ¬Çı¶¯³ÌĞò
+#include "ds1302.c"//èŠ¯ç‰‡é©±åŠ¨ç¨‹åº
 #define u8 unsigned char
 
 sfr P0M1 = 0x93;
@@ -26,7 +26,7 @@ sbit  COM3 = P0^1;
 sbit  COM4 = P0^0;
 sbit  COM5 = P5^4;
 
-//°´Å¥¶¨Òå
+//æŒ‰é’®å®šä¹‰
 sbit  add = P3^2;
 sbit  minus = P3^5;	
 sbit  setting = P3^4;
@@ -70,19 +70,19 @@ u8 order(u8 a)
 	}
 	return b;
 }
-//¶ş½øÖÆ×ªbcdÂë
+//äºŒè¿›åˆ¶è½¬bcdç 
 u8 bin2bcd(u8 i)
 {
 	i = ((i / 10) << 4) + i % 10;
 	return i;
 }
 void delayms(int ms)
-//Õâ¸öÈí¼ş´óÔ¼¿ÉÒÔµÈ´ımsºÁÃë
+//è¿™ä¸ªè½¯ä»¶å¤§çº¦å¯ä»¥ç­‰å¾…msæ¯«ç§’
 {
     int i,k;
     for(k=0; k<ms;k++)  {   for(i=0;i<500;i++);  }
 }
-//Ë¢ĞÂ
+//åˆ·æ–°
 void refresh(void)
 {
 	
@@ -104,7 +104,7 @@ void refresh(void)
 }
 
 
-//ÏÔÊ¾
+//æ˜¾ç¤º
 void DispTime(void)	//BCD code from 1302
 {
 	thou = hour/10;
@@ -113,7 +113,7 @@ void DispTime(void)	//BCD code from 1302
 	one  = minute%10;
 	LED8 = order(bin2bcd(sec));
 }
-//Ê±·Ö¼Ó¼õ
+//æ—¶åˆ†åŠ å‡
 void hourplus()
 {
 	if(++hour>23)hour=0;
@@ -176,7 +176,7 @@ void keyscan()
 	{
 		if(++flashtimeout>1000) {flashtimeout = 0; keymode =0;}
 	}
-		//ÅĞ¶ÏÉèÖÃÄ£Ê½
+		//åˆ¤æ–­è®¾ç½®æ¨¡å¼
 	if((minus ==0) || (add ==0)||(setting ==0)||(exit ==0))   
 	{
 		count =0;
@@ -193,10 +193,10 @@ void keyscan()
 		minuscheck();
 		pluscheck();
 		
-		do{				//µÈ´ı¼üÊÍ·Å
+		do{				//ç­‰å¾…é”®é‡Šæ”¾
 			DispTime();
 			refresh();
-			//delayms(2);	//ÒòÎªMCU´¦ÀíËÙ¶ÈÔ¶±ÈÈË¿ì£¬ËùÒÔ±ØĞëµÈ´ı
+			//delayms(2);	//å› ä¸ºMCUå¤„ç†é€Ÿåº¦è¿œæ¯”äººå¿«ï¼Œæ‰€ä»¥å¿…é¡»ç­‰å¾…
 
 			if(count < 200)
 				{
@@ -207,7 +207,7 @@ void keyscan()
 			{
 				pluscheck();
 				minuscheck();
-				count += 1;//¿ØÖÆ¼ÓµÄ¸öÊı£¬ÕâÀï´ó¸Å¼Ó10¸öÊı»á±äµÃ³¬¿ì
+				count += 1;//æ§åˆ¶åŠ çš„ä¸ªæ•°ï¼Œè¿™é‡Œå¤§æ¦‚åŠ 10ä¸ªæ•°ä¼šå˜å¾—è¶…å¿«
 				wait(200);
 			}
 			else
@@ -226,15 +226,15 @@ void keyscan()
 Port Output Configuration Settings FOR STC
 PxM1.y PxM0.y Port     Pin Mode for STC
  0      0      Quasi-bidirectional
- 0      1      Push-Pull   ¸ßµÍµçÆ½Ç¿Á¦Êä³ö£¬Ò²½ĞÍÆÍìÊä³ö
+ 0      1      Push-Pull   é«˜ä½ç”µå¹³å¼ºåŠ›è¾“å‡ºï¼Œä¹Ÿå«æ¨æŒ½è¾“å‡º
  1      0      Input Only (High Impedance)
  1      1      Open Drain
-´ËÈí¼şÓÃĞ¾Æ¬STC15W408
+æ­¤è½¯ä»¶ç”¨èŠ¯ç‰‡STC15W408
 --------------------------------------------*/
-//³õÊ¼»¯
+//åˆå§‹åŒ–
 void PORTINIT(void)
 {
-	P2M1 = 0x00;  //ÕâÁ½¾ä°ÑP1¿ÚµÄËùÓĞ8¸öIO½ÅÉèÖÃ³ÉÍÆÍìÊä³ö
+	P2M1 = 0x00;  //è¿™ä¸¤å¥æŠŠP1å£çš„æ‰€æœ‰8ä¸ªIOè„šè®¾ç½®æˆæ¨æŒ½è¾“å‡º
 	P2M0 = 0xff;
    	P0M1 = 0x00;
    	P0M0 = 0x00;
@@ -246,12 +246,12 @@ void PORTINIT(void)
 	P1M0 = 0x00;
 }
 
-//Ö÷º¯Êı
+//ä¸»å‡½æ•°
 void main(void)
 {
 	PORTINIT();
 	COM5 = 0;
-	P2 = 0;		//½«P2ËùÓĞLED¶¼¹Ø±Õ
+	P2 = 0;		//å°†P2æ‰€æœ‰LEDéƒ½å…³é—­
 	unwrprt13();
 	WRhour(20);WRmin(58);WRsec(0);
 	keymode=0;
