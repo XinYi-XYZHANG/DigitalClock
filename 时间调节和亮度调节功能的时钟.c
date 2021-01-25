@@ -193,7 +193,7 @@ void refresh(void)
 
 
 //显示
-void DispTime(void)	//BCD code from 1302
+void DispTime(void)	
 {
 	thou = hour/10;
 	hund = hour%10;
